@@ -2,26 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+/* globals */
+input{
+  @apply border-2 border-gray-400 rounded-md px-3 mb-4;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+label{
+  @apply text-zinc-900;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+h2{
+  @apply text-2xl mb-4;
+}
+
+h4{
+  @apply text-xl text-slate-800 mb-4;
+}
+
+
+/* buttons */
+.btn-danger{
+  @apply bg-red-500 text-white px-4 py-1 rounded-md;
+}
+.btn-primary{
+  @apply bg-blue-500 text-white px-4 py-1 rounded-md;
+}
+.btn-warn{
+  @apply bg-yellow-500 text-slate-600 px-4 py-1 rounded-md;
+}
+
+
+/* Links */
+
+.edit-link{
+  @apply inline-block outline bg-zinc-200 rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+}
+
+.new-link{
+  @apply bg-emerald-500 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+}
+
+.primary-link{
+  @apply bg-slate-300 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+}
+
+.formError{
+  @apply ml-2 text-red-500;
+}
+
+
+
+
+
+/* containers */
+.cards-container{
+  @apply gap-2 m-3 grid grid-cols-3;
 }
