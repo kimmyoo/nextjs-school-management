@@ -48,7 +48,11 @@ export default function NewLicense({ programs, instructor }) {
       <h4>Add New License to instructor, {instructor.instructorName}</h4>
       <form className="flex flex-col">
         <label htmlFor="programSelect">Program</label>
-        <select id="programSelect" value={selectedProgram} onChange={e => setSelectedProgram(e.target.value)}>
+        <select
+          id="programSelect"
+          value={selectedProgram}
+          onChange={e => setSelectedProgram(e.target.value)}
+        >
           <option value="">Select</option>
           {
             programs.map(program =>

@@ -4,7 +4,7 @@
 
 
 /* globals */
-input{
+input, select, textarea{
   @apply border-2 border-gray-400 rounded-md px-3 mb-4;
 }
 
@@ -20,6 +20,10 @@ h4{
   @apply text-xl text-slate-800 mb-4;
 }
 
+
+hr{
+  @apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700;
+}
 
 /* buttons */
 .btn-danger{
@@ -47,6 +51,10 @@ h4{
   @apply bg-slate-300 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
 }
 
+.nooutline-link{
+  @apply bg-slate-300 inline-block rounded-md px-3 py-1 text-sm font-semibold mr-2 mb-2 outline-1;
+}
+
 .formError{
   @apply ml-2 text-red-500;
 }
@@ -58,4 +66,12 @@ h4{
 /* containers */
 .cards-container{
   @apply gap-2 m-3 grid grid-cols-3;
+}
+
+.formCols-container{
+  @apply gap-1 m-1 grid grid-cols-2;
+}
+
+.col-in-form{
+  @apply flex flex-col;
 }

@@ -1,24 +1,11 @@
 import Layout from "@/components/Layout"
 import Link from "next/link"
-import { useState, useEffect } from "react"
-import axios from "axios"
 import InstructorCard from "@/components/InstructorCard"
 import { Instructor } from "@/models/instructor"
 import mongooseConnect from "@/lib/mongoose"
 
 //instructors
 export default function InstructorsPage({ instructors }) {
-    // const [instructors, setInstructors] = useState([])
-
-    // useEffect(() => {
-    //     axios.get('/api/instructors/')
-    //         .then(response => {
-    //             setInstructors(response.data)
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //         })
-    // }, [])
 
     let contentToDisplay
 
@@ -54,19 +41,17 @@ export default function InstructorsPage({ instructors }) {
 }
 
 
+
 export async function getServerSideProps() {
     await mongooseConnect()
-
     const instructors = await Instructor.find({}, null, {
         sort: {
             "instructorName": 1,
         }
-    }).populate('licenses')
-
+    })
     return {
         props: {
             instructors: JSON.parse(JSON.stringify(instructors)),
         }
     }
-
 }

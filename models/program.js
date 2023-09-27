@@ -1,7 +1,5 @@
 import { Schema, model, models } from "mongoose"
 
-
-
 const ProgramSchema = new Schema({
     programName: {
         type: String,

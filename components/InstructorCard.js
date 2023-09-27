@@ -30,7 +30,7 @@ export default function InstructorCard({ instructor }) {
                     <span
                         className="primary-link"
                     >
-                        Details
+                        Licenses
                     </span>
                 </Link>
             </div>

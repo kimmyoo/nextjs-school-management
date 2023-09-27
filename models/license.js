@@ -9,12 +9,15 @@ const LicenseSchema = new Schema({
 
     program: {
         type: mongoose.Types.ObjectId,
-        ref: 'Program'
+        ref: 'Program',
+        required: true
     },
 
     instructor: {
         type: mongoose.Types.ObjectId,
-        ref: 'Instructor'
+        // type: Schema.Types.ObjectId,
+        ref: 'Instructor',
+        required: true
     }
 })
 
