@@ -68,8 +68,10 @@ hr{
 }
 
 
-
-
+/* informative */
+.err-msg{
+  @apply text-red-500 text-center;
+}
 
 /* containers */
 .cards-container{

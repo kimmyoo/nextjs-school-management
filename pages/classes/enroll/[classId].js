@@ -14,6 +14,7 @@ export default function EnrollStudent({ cls }) {
   const [searchResult, setSearchResult] = useState([])
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [redirect, setRedirect] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const searchStudent = async () => {
@@ -52,6 +53,7 @@ export default function EnrollStudent({ cls }) {
       setSearchQuery('')
       setSearchResult([])
       setSelectedStudent(null)
+      setError(null)
     }
   }
 
@@ -62,6 +64,7 @@ export default function EnrollStudent({ cls }) {
       await axios.patch("/api/classes/enroll/", { cls, selectedStudent })
       setRedirect(true)
     } catch (err) {
+      setError(err.response.data)
       console.error('form submission error:', err.response.data)
     }
   }
@@ -124,6 +127,9 @@ export default function EnrollStudent({ cls }) {
               >
                 Enroll Student
               </button>}
+            {
+              error && <p className="err-msg">Error: {selectedStudent?.firstName} {selectedStudent?.lastName}-{error.message}</p>
+            }
           </div>
           : <div>
             <div className="inline-flex items-center justify-center w-full">

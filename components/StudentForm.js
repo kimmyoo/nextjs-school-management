@@ -104,7 +104,6 @@ export default function StudentForm({ cls, student }) {
     } else {
       router.push(`/classes/${cls._id}`)
     }
-
   }
 
   return (

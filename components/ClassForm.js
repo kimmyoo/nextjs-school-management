@@ -18,6 +18,7 @@ export default function ClassForm({ licensesOfSameProgram, license, cls }) {
   const [status, setStatus] = useState(cls?.status)
   const [formErrors, setFormErrors] = useState({})
   const [redirect, setRedirect] = useState(false)
+  const [error, setError] = useState(null)
   const router = useRouter()
 
   const handleSubmit = async (e) => {
@@ -38,22 +39,26 @@ export default function ClassForm({ licensesOfSameProgram, license, cls }) {
     }
 
     if (classId) {
-      try {
-        axios.patch(`/api/classes/${classId}`, { ...formData, status, _id: classId })
-        console.log(formData)
-      } catch (err) {
-        console.error('form submission error: ', err.response.data)
-      }
-
+      axios.patch(`/api/classes/${classId}`, { ...formData, status, _id: classId })
+        .then(response => {
+          console.log(response)
+          setRedirect(true)
+        })
+        .catch(err => {
+          setError(err.response.data)
+          console.error('form submission error: ', err.response.data)
+        })
     } else {
-      try {
-        const response = await axios.post('/api/classes', formData)
-        console.log(response.data)
-      } catch (err) {
-        console.error('form submission error:', err.response.data)
-      };
+      axios.post('/api/classes', formData)
+        .then(response => {
+          console.log(response.data)
+          setRedirect(true)
+        })
+        .catch(err => {
+          setError(err.response.data)
+          console.error('form submission error:', err.response.data)
+        })
     }
-    setRedirect(true)
   }
 
 
@@ -64,13 +69,11 @@ export default function ClassForm({ licensesOfSameProgram, license, cls }) {
 
 
   if (redirect && classId) {
-    router.push(`/classes/${classId}`)
+    router.push(`/classes/${classId}?refresh=true`)
   }
   if (redirect) {
     router.push('/classes/')
   }
-
-
 
   return (
     <div>
@@ -216,6 +219,7 @@ export default function ClassForm({ licensesOfSameProgram, license, cls }) {
           <label htmlFor="closed">Closed</label>
         </div>}
       </form>
+      {error && <p className="err-msg">Error: {error.message}</p>}
 
       <div className="flex justify-between">
         <button

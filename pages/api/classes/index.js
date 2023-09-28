@@ -12,6 +12,11 @@ export default async function handler(req, res) {
 
     if (method === "POST") {
         const formData = req.body
+        const { classCode } = formData
+        const foundClass = await Class.findOne({ classCode })
+        if (foundClass) {
+            return res.status(409).json({ message: "duplicate class code" })
+        }
         const classDoc = await Class.create(formData)
         res.json(classDoc)
     }
