@@ -2,11 +2,16 @@ import Layout from "@/components/Layout"
 import mongooseConnect from "@/lib/mongoose"
 import { Student } from "@/models/student"
 import { isValidObjectId } from "@/lib/validation"
+import StudentForm from "@/components/StudentForm"
 
 export default function EditStudent({ student }) {
+
+    if (!student) return
+
     return (
         <Layout>
-            <h2>Edit Student</h2>
+            <h2>Edit Student Page</h2>
+            <StudentForm student={student} />
         </Layout>
     )
 }

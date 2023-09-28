@@ -5,31 +5,134 @@ import mongooseConnect from "@/lib/mongoose";
 import axios from "axios";
 import { useRouter } from "next/router";
 import StudentForm from "@/components/StudentForm";
+import StudentCard from "@/components/StudentCard";
 
 
 export default function EnrollStudent({ cls }) {
+  const router = useRouter()
+  const [searchQuery, setSearchQuery] = useState('')
   const [searchResult, setSearchResult] = useState([])
   const [selectedStudent, setSelectedStudent] = useState(null)
+  const [redirect, setRedirect] = useState(false)
+
+  useEffect(() => {
+    const searchStudent = async () => {
+      axios.post(`/api/students/search?q=${searchQuery}`)
+        .then(response => {
+          setSearchResult(response.data)
+        })
+        .catch(err => {
+          console.error(err.message)
+        })
+    }
+
+    const debouncedSearch = setTimeout(() => {
+      if (searchQuery) {
+        searchStudent()
+      } else {
+        setSearchResult([])
+      }
+    }, 500)
+
+    return () => clearTimeout(debouncedSearch)
+  }, [searchQuery])
+
+
+  const selectStudent = (e) => {
+    const { value } = e.target
+    const matched = searchResult.find(student => student._id === value)
+    setSelectedStudent(matched)
+  }
+
+  const handleSearchQueryChange = (e) => {
+    const { value } = e.target
+    if (value) {
+      setSearchQuery(value)
+    } else {
+      setSearchQuery('')
+      setSearchResult([])
+      setSelectedStudent(null)
+    }
+  }
+
+  const handleEnroll = async (e) => {
+    e.preventDefault()
+
+    try {
+      await axios.patch("/api/classes/enroll/", { cls, selectedStudent })
+      setRedirect(true)
+    } catch (err) {
+      console.error('form submission error:', err.response.data)
+    }
+  }
+
+
+  if (redirect) {
+    router.push(`/classes/${cls._id}`)
+  }
+
 
   return (
     <Layout>
       <h2>Enrollment to {cls.classCode.toUpperCase()}</h2>
+      <h4>Enroll a previously registered student</h4>
       <div className="flex formCols-container">
-        <div>Quick Search</div>
-        <div>Search Result</div>
-      </div>
-      <div className="inline-flex items-center justify-center w-full">
-        <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-        <span className="absolute p-2 font-medium text-xl bg-slate-200 ">or</span>
+        <div className="col-in-form">
+          <label htmlFor="">Search Registered Student<small>(type last or first name, unique Id# or ssn)</small></label>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchQueryChange}
+          />
+          <div>
+            <p>Search Result: </p>
+            <div className="flex flex-col gap-2">
+              {
+                searchResult.length > 0 && searchResult.map(student => (
+                  <button
+                    type="button"
+                    key={student._id}
+                    value={student._id}
+                    className={selectedStudent?._id === student._id ? "btn-warn" : "btn-primary"}
+                    onClick={selectStudent}
+                  >
+                    {student.lastName}, {student.firstName} - {student.uniqueId}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+        {/* student card for preview */}
+        <div>
+          {selectedStudent && searchResult.length > 0
+            ? <StudentCard student={selectedStudent} />
+            : <p>Student Preview</p>
+          }
+        </div>
       </div>
 
       {/* conditionally render components based on search result and chosen student */}
       {
-        selectedStudent
-          ? <div>New Component goes here where it takes cls and selected student. associate both doc from api request</div>
-          : <StudentForm cls={cls} />
+        selectedStudent || searchResult.length > 0
+          ? <div>
+            {selectedStudent &&
+              <button
+                className="btn-warn"
+                type="button"
+                onClick={handleEnroll}
+              >
+                Enroll Student
+              </button>}
+          </div>
+          : <div>
+            <div className="inline-flex items-center justify-center w-full">
+              <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+              <span className="absolute p-2 font-medium text-xl bg-slate-200 ">or</span>
+            </div>
+            <StudentForm cls={cls} />
+          </div>
       }
-
     </Layout>
   )
 }

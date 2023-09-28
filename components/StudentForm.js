@@ -3,18 +3,24 @@ import { isStudentFormValid, formatPhoneNumber } from "@/lib/validation";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export default function StudentForm({ cls }) {
+export default function StudentForm({ cls, student }) {
+  // grab the  _id from student passed from EditStudent component
+  const _id = student?._id
+  // console.log(_id)
 
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [dob, setDob] = useState('')
-  const [last4Digits, setLast4Digits] = useState('')
-  const [uniqueId, setUniqueId] = useState('')
-  const [gender, setGender] = useState('')
-  const [phoneNum, setPhoneNum] = useState('')
-  const [email, setEmail] = useState('')
-  const [address, setAddress] = useState('')
-  const [sideNote, setSideNote] = useState('')
+  const [firstName, setFirstName] = useState(student?.firstName || '')
+  const [lastName, setLastName] = useState(student?.lastName || '')
+  const [dob, setDob] = useState(student?.dob.split('T')[0] || '')
+  const [last4Digits, setLast4Digits] = useState(student?.last4Digits || '')
+  const [uniqueId, setUniqueId] = useState(student?.uniqueId || '')
+  const [gender, setGender] = useState(student?.gender || '')
+  const [phoneNum, setPhoneNum] = useState(student?.phoneNum || '')
+  const [email, setEmail] = useState(student?.email || '')
+  const [address, setAddress] = useState(student?.address || '')
+  const [sideNote, setSideNote] = useState(student?.sideNote || '')
+  const [classes, setClasses] = useState(student?.classes?.map(cls => cls._id) || [])
+  const [classesToDisplay, setClassesToDisplay] = useState(student?.classes || [])
+  const [classesRemoved, setClassesRemoved] = useState([])
   const [formErrors, setFormErrors] = useState({})
   const [redirect, setRedirect] = useState(false)
   const router = useRouter()
@@ -34,7 +40,21 @@ export default function StudentForm({ cls }) {
     setDisabled(prev => !prev)
   }
 
+  const handleDeleteClass = (e) => {
+    const { value } = e.target
+    // delete both id and displayed objects
+    setClasses(prev => (classes.filter(cls => (
+      cls !== value
+    ))))
 
+    setClassesToDisplay(prev => (classesToDisplay.filter(cls => (
+      cls._id !== value
+    ))))
+
+    // also add the deleted class code to classesRemoved 
+    // for backend api to update class documents in db
+    setClassesRemoved(prev => [...prev, value])
+  }
 
   const handlePhoneNumChange = (e) => {
     const { value } = e.target
@@ -44,6 +64,7 @@ export default function StudentForm({ cls }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     const formData = {
       firstName,
       lastName,
@@ -51,31 +72,45 @@ export default function StudentForm({ cls }) {
       last4Digits,
       uniqueId, gender,
       phoneNum, email,
-      address, sideNote, classes: [cls._id]
+      address, sideNote,
     }
-
 
     if (!isStudentFormValid(formData, setFormErrors)) {
       return
     }
 
-    try {
-      const response = await axios.post('/api/students/', { formData, classId: cls._id })
-      console.log(response.data)
-    } catch (err) {
-      console.error('form submission error:', err.response.data)
-    };
+
+    if (_id) {
+      try {
+        await axios.patch(`/api/students/${_id}`, { formData, _id, classes, classesRemoved })
+      } catch (err) {
+        console.error('form submission error:', err.response.data)
+      }
+    } else {
+      // enroll a new student to a class, need to pass cls._id 
+      try {
+        const response = await axios.post('/api/students/', { formData, classId: cls._id, classes: [cls._id] })
+        console.log(response.data)
+      } catch (err) {
+        console.error('form submission error:', err.response.data)
+      }
+    }
     setRedirect(true)
   }
 
   if (redirect) {
-    router.push(`/classes/${cls._id}`)
+    if (_id) {
+      router.push(`/students/${_id}`)
+    } else {
+      router.push(`/classes/${cls._id}`)
+    }
+
   }
 
   return (
     <>
       <form className="flex flex-col">
-        <h4 className="text-green-700">Register a New Student</h4>
+        <h4 className="text-green-700">{_id ? `Edit Student ${student.firstName} ${student.lastName}` : "Register a New Student"}</h4>
         <div className="formCols-container">
 
           <div className="col-in-form">
@@ -213,7 +248,37 @@ export default function StudentForm({ cls }) {
               onChange={e => setSideNote(e.target.value)}
             />
           </div>
+          {/* conditionally rendered class list  */}
+          {
+            _id &&
+            <div className="col-in-form text-right">
+              Classes taken by this student: <br />
+              (click button to delete class from this student)
+            </div>
+          }
+          {
+            _id &&
+            <div className="col-in-form">
+              <div className="flex">
+                {classesToDisplay.length > 0 && classesToDisplay.map(cls => (
+                  <div className="flex" key={cls._id}>
+                    <span className="bg-zinc-300 rounded-md flex items-center">{cls.classCode}</span>
+                    <button
+                      type="button"
+                      className="btn-warn"
+                      value={cls._id}
+                      onClick={handleDeleteClass}
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          }
         </div>
+
+
       </form>
       <div>
         <button

@@ -13,8 +13,8 @@ export default async function handler(req, res) {
     // }
 
     if (method === "POST") {
-        const { formData, classId } = req.body
-        const studentDoc = await Student.create(formData)
+        const { formData, classId, classes } = req.body
+        const studentDoc = await Student.create({ ...formData, classes })
 
         const cls = await Class.findOne({ _id: classId }).exec()
 

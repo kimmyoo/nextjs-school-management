@@ -51,6 +51,7 @@ export default function StudentCard({ student }) {
                             {student.classes.length > 0
                                 && student.classes.map(cls => (
                                     <Link
+                                        key={cls._id}
                                         href={`/classes/${cls._id}`}
                                         className="nooutline-link"
                                     >

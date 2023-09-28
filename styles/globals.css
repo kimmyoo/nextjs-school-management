@@ -27,13 +27,17 @@ hr{
 
 /* buttons */
 .btn-danger{
-  @apply bg-red-500 text-white px-4 py-1 rounded-md;
+  @apply bg-red-500 text-white px-3 rounded-md;
 }
 .btn-primary{
-  @apply bg-blue-500 text-white px-4 py-1 rounded-md;
+  @apply bg-blue-500 text-white px-3 rounded-md;
+}
+
+.btn-student{
+  @apply bg-blue-500 text-white px-3 text-left rounded-md;
 }
 .btn-warn{
-  @apply bg-yellow-500 text-slate-600 px-4 py-1 rounded-md;
+  @apply bg-yellow-500 text-slate-600 px-3 rounded-md;
 }
 
 
@@ -45,6 +49,10 @@ hr{
 
 .new-link{
   @apply bg-emerald-500 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+}
+
+.danger-link{
+  @apply bg-red-500 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
 }
 
 .primary-link{
