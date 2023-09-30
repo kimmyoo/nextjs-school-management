@@ -9,6 +9,13 @@ const StudentSchema = new Schema({
         }
     ],
 
+    transactions: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'Transaction'
+        }
+    ],
+
     firstName: {
         type: String,
         required: true

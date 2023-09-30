@@ -23,8 +23,8 @@ export default async function handler(req, res) {
 
         const studentDoc = await Student.create({ ...formData, classes })
         const cls = await Class.findOne({ _id: classId }).exec()
-        await cls.students.push(studentDoc._id)
-        cls.save()
+        cls.students.push(studentDoc._id)
+        await cls.save()
 
         res.status(200).json(studentDoc)
     }

@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     if (method === "PATCH") {
         const { _id, formData, classes, classesRemoved } = req.body
         const { uniqueId } = formData
-        console.log(uniqueId)
+        // console.log(uniqueId)
         const foundStudent = await Student.findOne({ uniqueId })
         // .toString() is needed
         if (foundStudent && foundStudent._id.toString() !== _id) {

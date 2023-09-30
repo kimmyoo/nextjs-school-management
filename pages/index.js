@@ -9,12 +9,11 @@ export default function Home() {
       <h2>Dashboard</h2>
       <div >
         <div className="flex">
-          User: <img src={session?.user?.image} alt="" className="w-6 h-6" />
+          User:
           <p>{session?.user?.name}</p>
         </div>
         {session?.user?.email}
       </div>
     </div>
   </Layout>
-
 }
