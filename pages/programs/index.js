@@ -3,6 +3,7 @@ import Link from "next/link"
 import ProgramCard from "@/components/ProgramCard"
 import { Program } from "@/models/program"
 import mongooseConnect from "@/lib/mongoose"
+import { getSession } from "next-auth/react"
 
 export default function ProgramsPage({ programs }) {
 
@@ -32,6 +33,16 @@ export default function ProgramsPage({ programs }) {
 
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context)
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
   await mongooseConnect()
   const programs = await Program.find({}, null, {
     sort: {

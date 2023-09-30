@@ -3,6 +3,7 @@ import ClassForm from "@/components/ClassForm"
 import mongooseConnect from "@/lib/mongoose"
 import { Class } from "@/models/class"
 import { License } from "@/models/license"
+import { getSession } from "next-auth/react"
 
 export default function EditClass({ cls, license, licensesOfSameProgram }) {
     return (
@@ -14,6 +15,15 @@ export default function EditClass({ cls, license, licensesOfSameProgram }) {
 
 
 export async function getServerSideProps(context) {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            }
+        }
+    }
     await mongooseConnect()
     const { classId } = context.query
     const cls = await Class.findOne({ _id: classId }, null).populate('program')

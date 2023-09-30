@@ -2,6 +2,7 @@ import Layout from "@/components/Layout"
 import { License } from "@/models/license"
 import mongooseConnect from "@/lib/mongoose"
 import ClassForm from "@/components/ClassForm"
+import { getSession } from "next-auth/react"
 
 export default function NewClass({ license, licensesOfSameProgram }) {
     if (!license || licensesOfSameProgram?.length === 0) return
@@ -15,6 +16,16 @@ export default function NewClass({ license, licensesOfSameProgram }) {
 
 
 export async function getServerSideProps(context) {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            }
+        }
+    }
+
     await mongooseConnect()
     const { licenseId } = context.query
     const license = await License.findOne({ _id: licenseId }, null).populate('program').populate('instructor')

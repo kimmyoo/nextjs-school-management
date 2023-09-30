@@ -5,6 +5,7 @@ import mongooseConnect from "@/lib/mongoose"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import { getSession } from "next-auth/react"
 import axios from "axios"
 
 export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) {
@@ -48,6 +49,7 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
                 <span>To: {cls?.begin.split('T')[0]}</span>
                 <span>Schedule: {cls?.schedule.toUpperCase()}</span>
                 <span>Status: {cls?.status ? "Open" : "Closed"}</span>
+                {cls?.sideNote && <span>Note: {cls?.sideNote}</span>}
             </p>
 
             {
@@ -87,8 +89,6 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
                 </table>
             }
 
-            <p className="text-center">Note: {cls?.sideNote}</p>
-
         </Layout>
     )
 }
@@ -96,6 +96,16 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
 
 
 export async function getServerSideProps(context) {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            }
+        }
+    }
+
     await mongooseConnect()
     const { classId } = context.query
     const cls = await Class.findOne({ _id: classId }, null).populate('program').populate('license').populate('students')

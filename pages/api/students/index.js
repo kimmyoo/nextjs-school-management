@@ -8,20 +8,24 @@ export default async function handler(req, res) {
     await mongooseConnect();
 
     // if (method === "GET") {
-    //     const instructors = await Instructor.find().populate('licenses')
-    //     res.status(200).json(instructors)
+    //     const students = await Student.find()
+    //     res.status(200).json(students)
     // }
 
     if (method === "POST") {
         const { formData, classId, classes } = req.body
+        const { uniqueId } = formData
+
+        const foundStudent = await Student.findOne({ uniqueId })
+        if (foundStudent) {
+            return res.status(409).json({ foundStudent, message: "duplicate Unique ID" })
+        }
+
         const studentDoc = await Student.create({ ...formData, classes })
-
         const cls = await Class.findOne({ _id: classId }).exec()
-
         await cls.students.push(studentDoc._id)
         cls.save()
 
         res.status(200).json(studentDoc)
     }
-
 }

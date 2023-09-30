@@ -1,0 +1,22 @@
+import { Class } from "@/models/class";
+import mongooseConnect from "@/lib/mongoose"
+
+
+export default async function handler(req, res) {
+    const { method } = req
+    await mongooseConnect();
+
+    if (method === "POST") {
+        const searchQuery = req.query.q
+        const searchRegex = new RegExp(searchQuery, 'i')
+
+        const classes = await Class.find(
+            {
+                $or: [
+                    { classCode: searchRegex },
+                ]
+            }
+        )
+        res.status(200).json(classes)
+    }
+}

@@ -27,10 +27,10 @@ hr{
 
 /* buttons */
 .btn-danger{
-  @apply bg-red-500 text-white px-3 rounded-md;
+  @apply bg-red-400 text-white px-3 rounded-md;
 }
 .btn-primary{
-  @apply bg-blue-500 text-white px-3 rounded-md;
+  @apply bg-blue-400 text-white px-3 rounded-md;
 }
 
 .btn-student{
@@ -44,19 +44,19 @@ hr{
 /* Links */
 
 .edit-link{
-  @apply inline-block outline bg-zinc-200 rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+  @apply inline-block bg-slate-200 rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
 }
 
 .new-link{
-  @apply bg-emerald-500 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+  @apply bg-green-400  inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
 }
 
 .danger-link{
-  @apply bg-red-500 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+  @apply bg-red-400 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
 }
 
 .primary-link{
-  @apply bg-slate-300 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+  @apply bg-slate-200  inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
 }
 
 .nooutline-link{
@@ -70,7 +70,7 @@ hr{
 
 /* informative */
 .err-msg{
-  @apply text-red-500 text-center;
+  @apply text-red-500;
 }
 
 /* containers */
@@ -84,4 +84,8 @@ hr{
 
 .col-in-form{
   @apply flex flex-col;
+}
+
+.student-small-card{
+  @apply bg-slate-300 rounded-md p-1 m-2 w-1/6 shadow-sm hover:-translate-y-1 hover:scale-110 transition ease-in-out delay-100 hover:shadow-lg hover:bg-slate-200;
 }

@@ -6,9 +6,15 @@ import mongooseConnect from "@/lib/mongoose"
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
-
     if (method === "PATCH") {
         const { _id, formData, classes, classesRemoved } = req.body
+        const { uniqueId } = formData
+        console.log(uniqueId)
+        const foundStudent = await Student.findOne({ uniqueId })
+        // .toString() is needed
+        if (foundStudent && foundStudent._id.toString() !== _id) {
+            return res.status(409).json({ foundStudent, message: "Duplicate unique ID" })
+        }
         const studentDoc = await Student.updateOne({ _id }, { ...formData, classes })
         // need to delete this student's ObjectId from every classDoc.students array
         // but only perform this update when needed.
@@ -29,8 +35,6 @@ export default async function handler(req, res) {
                 console.log(err)
             }
         }
-
         res.status(200).json(studentDoc)
     }
-
 }

@@ -4,9 +4,10 @@ import Header from "@/components/Header"
 
 export default function Layout({ children }) {
     // grab the session by using useSession from next-auth
-    const { data: session } = useSession()
-
-    if (!session) {
+    // page protection
+    const { data: session, status } = useSession()
+    // console.log(status)
+    if (!status || !session) {
         return (<>
             <Header />
             <div className="bg-slate-300 w-screen h-screen flex items-center">

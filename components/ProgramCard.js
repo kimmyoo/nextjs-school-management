@@ -7,7 +7,7 @@ export default function ProgramCard({ program }) {
     const info = "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
 
     return (
-        <div className="bg-white max-w-sm rounded-md overflow-hidden shadow-lg">
+        <div className="bg-slate-300 max-w-sm rounded-md overflow-hidden shadow-lg">
             <div className="px-6 py-2">
                 <div className="font-bold text-xl mb-2">{program.programName}</div>
                 <p>

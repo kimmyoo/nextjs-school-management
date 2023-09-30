@@ -1,5 +1,4 @@
 import { Student } from "@/models/student";
-import { Class } from "@/models/class";
 import mongooseConnect from "@/lib/mongoose"
 
 

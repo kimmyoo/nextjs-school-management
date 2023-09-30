@@ -3,7 +3,7 @@ import { isStudentFormValid, formatPhoneNumber } from "@/lib/validation";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export default function StudentForm({ cls, student }) {
+export default function StudentForm({ cls, student, changeVisibility }) {
   // grab the  _id from student passed from EditStudent component
   const _id = student?._id
   // console.log(_id)
@@ -22,7 +22,9 @@ export default function StudentForm({ cls, student }) {
   const [classesToDisplay, setClassesToDisplay] = useState(student?.classes || [])
   const [classesRemoved, setClassesRemoved] = useState([])
   const [formErrors, setFormErrors] = useState({})
+  const [apiError, setApiError] = useState(null)
   const [redirect, setRedirect] = useState(false)
+  const [showResetButton, setShowResetButton] = useState(false)
   const router = useRouter()
 
   // generate stdtId automatically using useEffect()
@@ -62,6 +64,22 @@ export default function StudentForm({ cls, student }) {
     setPhoneNum(formattedPhoneNum)
   }
 
+  const handleFirstnameFocus = (e) => {
+    const { name } = e.target
+    // condition !id is needed to avoid 
+    // changeVisibility() is not defined 
+    // when StudentForm is rendered inside EditStudent component
+    if (name === "firstName" && !_id) {
+      changeVisibility(false)
+      setShowResetButton(true)
+    }
+  }
+
+  const reset = (e) => {
+    changeVisibility(true)
+    setShowResetButton(false)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -83,7 +101,12 @@ export default function StudentForm({ cls, student }) {
     if (_id) {
       try {
         await axios.patch(`/api/students/${_id}`, { formData, _id, classes, classesRemoved })
+        setRedirect(true)
       } catch (err) {
+        const { foundStudent, message } = err.response.data
+        console.log(foundStudent, message)
+        const errorMsg = `${message}: ${foundStudent.lastName}, ${foundStudent.firstName} (DOB: ${foundStudent.dob.split('T')[0]}) also uses this unique ID. If they are different students, edit Unique Id.`
+        setApiError(errorMsg)
         console.error('form submission error:', err.response.data)
       }
     } else {
@@ -91,11 +114,14 @@ export default function StudentForm({ cls, student }) {
       try {
         const response = await axios.post('/api/students/', { formData, classId: cls._id, classes: [cls._id] })
         console.log(response.data)
+        setRedirect(true)
       } catch (err) {
+        const { foundStudent, message } = err.response.data
+        const errorMsg = `${message}: ${foundStudent.lastName}, ${foundStudent.firstName} (DOB: ${foundStudent.dob.split('T')[0]}) has the same unique ID, please verify if they are the same student.`
+        setApiError(errorMsg)
         console.error('form submission error:', err.response.data)
       }
     }
-    setRedirect(true)
   }
 
   if (redirect) {
@@ -108,8 +134,16 @@ export default function StudentForm({ cls, student }) {
 
   return (
     <>
+      {showResetButton &&
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={reset}
+        >Back to Search
+        </button>}
       <form className="flex flex-col">
-        <h4 className="text-green-700">{_id ? `Edit Student ${student.firstName} ${student.lastName}` : "Register a New Student"}</h4>
+        <h4 className="text-green-700">{_id ? `Edit Student ${student.firstName} ${student.lastName}` : "Register a New Student"}
+        </h4>
         <div className="formCols-container">
 
           <div className="col-in-form">
@@ -118,10 +152,12 @@ export default function StudentForm({ cls, student }) {
               {formErrors.firstName && <span className="formError">{formErrors.firstName}</span>}
             </div>
             <input
+              name="firstName"
               id="firstName"
               type="text"
               value={firstName}
               onChange={e => setFirstName(e.target.value)}
+              onFocus={handleFirstnameFocus}
             />
           </div>
           <div className="col-in-form">
@@ -287,6 +323,7 @@ export default function StudentForm({ cls, student }) {
         >
           Save
         </button>
+        {apiError && <p className="err-msg">{apiError}</p>}
       </div>
     </>
   )
