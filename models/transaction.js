@@ -13,7 +13,7 @@ const TransactionSchema = new Schema({
         ref: 'Class',
         required: true
     },
-    // p/r classCode + uniqueId + timestamp
+    // 'p' or 'r' classCode + uniqueId + timestamp
     tNumber: {
         type: String,
         required: true
