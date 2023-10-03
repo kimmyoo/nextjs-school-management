@@ -15,6 +15,7 @@ export default function ClassesPage({ preFetchedGroupedClasses, programs }) {
 
     const [searchQuery, setSearchQuery] = useState('')
     const [searchResult, setSearchResult] = useState([])
+    const [isSelectDisabled, setIsSelectDisabled] = useState(false)
 
     useEffect(() => {
         const searchStudent = async () => {
@@ -42,9 +43,11 @@ export default function ClassesPage({ preFetchedGroupedClasses, programs }) {
         const { value } = e.target
         if (value) {
             setSearchQuery(value)
+            setIsSelectDisabled(true)
         } else {
             setSearchQuery('')
             setSearchResult([])
+            setIsSelectDisabled(false)
         }
     }
 
@@ -71,22 +74,22 @@ export default function ClassesPage({ preFetchedGroupedClasses, programs }) {
                         placeholder="class code"
                         onChange={handleSearchQueryChange}
                     />
+                    <select
+                        className={selectedOption ? "bg-yellow-300" : ""}
+                        value={selectedOption}
+                        onChange={handleSelectChange}
+                        disabled={isSelectDisabled}
+                    >
+                        <option value="">All Programs</option>
+                        {programs.map(program => (
+                            <option
+                                key={program._id}
+                                value={program._id}>
+                                {program.programName}
+                            </option>
+                        ))}
+                    </select>
                 </div>
-                <select
-                    name=""
-                    id=""
-                    value={selectedOption}
-                    onChange={handleSelectChange}
-                >
-                    <option value="">All Programs</option>
-                    {programs.map(program => (
-                        <option
-                            key={program._id}
-                            value={program._id}>
-                            {program.programName}
-                        </option>
-                    ))}
-                </select>
             </div>
             {
                 (searchResult && !searchQuery) && <div>

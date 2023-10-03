@@ -89,3 +89,11 @@ hr{
 .student-small-card{
   @apply bg-slate-300 rounded-md p-1 m-2 w-1/6 shadow-sm hover:-translate-y-1 hover:scale-110 transition ease-in-out delay-100 hover:shadow-lg hover:bg-slate-200;
 }
+
+.dashboard-cards-container{
+  @apply gap-2 m-3 grid grid-cols-2;
+}
+
+.dashboard-card{
+  @apply border bg-slate-200 p-2 rounded-lg shadow-lg;
+}

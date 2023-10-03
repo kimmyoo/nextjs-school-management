@@ -3,6 +3,7 @@ import Link from "next/link"
 import InstructorCard from "@/components/InstructorCard"
 import { Instructor } from "@/models/instructor"
 import mongooseConnect from "@/lib/mongoose"
+import { getSession } from "next-auth/react"
 
 //instructors
 export default function InstructorsPage({ instructors }) {
@@ -42,7 +43,17 @@ export default function InstructorsPage({ instructors }) {
 
 
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            }
+        }
+    }
+
     await mongooseConnect()
     const instructors = await Instructor.find({}, null, {
         sort: {

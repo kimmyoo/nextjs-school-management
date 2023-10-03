@@ -14,19 +14,20 @@ export default function StudentDetail({ student }) {
       <div className="flex justify-center items-center">
         <StudentCard student={student} />
       </div>
+      <div className="flex justify-between">
+        <h4>Student's Transaction Record</h4>
+        <Link
+          className="new-link m-2"
+          href={`/students/tuition/new/${student._id}`}
+        >New Transaction
+        </Link>
+      </div>
       {/* student needs to be enrolled at least one class to proceed to payment option */}
       {
-        student.classes.length > 0
+        student.transactions.length > 0
         &&
         <div>
-          <div className="flex justify-between">
-            <h4>Student's Transaction Record</h4>
-            <Link
-              className="new-link m-2"
-              href={`/students/tuition/new/${student._id}`}
-            >New Transaction
-            </Link>
-          </div>
+
           {
             student.transactions.length > 0
             &&
@@ -46,11 +47,9 @@ export default function StudentDetail({ student }) {
                   <tr>
                     <td>{trans.createdAt}</td>
                     <td>{trans.tNumber}</td>
-                    <td>{trans.isRefund ? "refund" : "payment"}</td>
+                    <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>{trans.isRefund ? "refund" : "payment"}</td>
                     <td>{
-                      (student.classes.find(cls => (
-                        cls._id === trans.class
-                      ))).classCode
+                      trans.tNumber.split('-')[1]
                     }</td>
                     <td>${trans.amount}</td>
                     <td>{trans.tNote ? trans.tNote : "N/A"}</td>
