@@ -67,10 +67,11 @@ export default function ProgramForm({ program }) {
         <>
             <form className="flex flex-col">
                 <div className="flex">
-                    <label>Program Name</label>
+                    <label htmlFor="name">Program Name</label>
                     {formErrors.name && <span className="formError">{formErrors.name}</span>}
                 </div>
                 <input
+                    id="name"
                     type="text"
                     name="name"
                     value={name}
@@ -78,10 +79,11 @@ export default function ProgramForm({ program }) {
                 />
 
                 <div className="flex">
-                    <label>Curriculum Code</label>
+                    <label htmlFor="code">Curriculum Code</label>
                     {formErrors.code && <span className="formError">{formErrors.code}</span>}
                 </div>
                 <input
+                    id="code"
                     type="text"
                     name="code"
                     value={code}
@@ -89,10 +91,11 @@ export default function ProgramForm({ program }) {
                 />
 
                 <div className="flex">
-                    <label>Contact Hours</label>
+                    <label htmlFor="length">Contact Hours</label>
                     {formErrors.length && <span className="formError">{formErrors.length}</span>}
                 </div>
                 <input
+                    id="length"
                     type="text"
                     name="length"
                     value={length}
@@ -100,10 +103,11 @@ export default function ProgramForm({ program }) {
                 />
 
                 <div className="flex">
-                    <label>Cost</label>
+                    <label htmlFor="cost">Cost</label>
                     {formErrors.cost && <span className="formError">{formErrors.cost}</span>}
                 </div>
                 <input
+                    id="cost"
                     type="text"
                     name="cost"
                     value={cost}
@@ -111,10 +115,11 @@ export default function ProgramForm({ program }) {
                 />
 
                 <div className="flex">
-                    <label>Effective on</label>
+                    <label htmlFor="effectiveOn">Effective on</label>
                     {formErrors.effectiveOn && <span className="formError">{formErrors.effectiveOn}</span>}
                 </div>
                 <input
+                    id="effectiveOn"
                     type="date"
                     name="effectiveOn"
                     value={effectiveOn}
@@ -122,10 +127,11 @@ export default function ProgramForm({ program }) {
                 />
 
                 <div className="flex">
-                    <label>Expires on</label>
+                    <label htmlFor="expiresOn">Expires on</label>
                     {formErrors.expiresOn && <span className="formError">{formErrors.expiresOn}</span>}
                 </div>
                 <input
+                    id="expiresOn"
                     type="date"
                     name="expiresOn"
                     value={expiresOn}

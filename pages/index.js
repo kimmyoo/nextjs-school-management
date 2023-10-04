@@ -29,22 +29,22 @@ export default function Home({ students, classes, transactions }) {
     </div>
     <div className="dashboard-cards-container">
       <div className="dashboard-card">
-        <h4>Today's Student Registration</h4>
-        <div className="flex flex-wrap gap-1">
-          {
-            students.length > 0 ? students.map((student, index) => (
-              <p key={student._id}>{index + 1}. {student.lastName}, {student.firstName} <Link className="nooutline-link" href={`/students/${student._id}`}>Details</Link></p>
-            )) : <p>no student registration yet today.</p>
-          }
-        </div>
-      </div>
-      <div className="dashboard-card">
         <h4>Current Open Classes</h4>
         <div className="flex gap-2 flex-wrap">
           {
             classes.length > 0 ? classes.map((cls, index) => (
               <ClassCard key={cls._id} cls={cls} />
             )) : <p>no open classes for registration yet.</p>
+          }
+        </div>
+      </div>
+      <div className="dashboard-card">
+        <h4>Today's Student Registration</h4>
+        <div className="flex flex-wrap gap-1">
+          {
+            students.length > 0 ? students.map((student, index) => (
+              <p key={student._id}>{index + 1}. {student.lastName}, {student.firstName} <Link className="nooutline-link" href={`/students/${student._id}`}>Details</Link></p>
+            )) : <p>no student registration yet today.</p>
           }
         </div>
       </div>

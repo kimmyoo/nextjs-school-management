@@ -180,8 +180,9 @@ export default function ClassForm({ licensesOfSameProgram, license, cls }) {
             />
           </div>
           <div className="col-in-form">
-            <label htmlFor="">Intshp Ends</label>
+            <label htmlFor="intshpEnd">Intshp Ends</label>
             <input
+              id="intshpEnd"
               type="date"
               value={intshpEnd}
               onChange={e => setIntshpEnd(e.target.value)}

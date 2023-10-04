@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 
-export default function Nav() {
+export default function Nav({ showNav }) {
 
   const inactiveLink = "flex gap-2 p-1 pr-4"
   const activeLink = inactiveLink + ' bg-slate-200 text-blue-900 rounded-l-lg'
@@ -11,7 +11,7 @@ export default function Nav() {
   const { pathname } = router
 
   return (
-    <aside className="p-2 pt-0 pr-0">
+    <aside className={(showNav ? 'left-0' : '-left-full') + " top-0 p-2 pt-0 pr-0 fixed w-full bg-slate-300 h-full md:static md:w-auto transition-all"}>
       <nav className="flex flex-col gap-4 ml-4 mt-3">
         <Link
           href={'/'}

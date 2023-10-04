@@ -45,7 +45,7 @@ export default function StudentDetail({ student }) {
               </thead>
               <tbody>
                 {student.transactions.map(trans => (
-                  <tr>
+                  <tr key={trans._id}>
                     <td>{trans.createdAt}</td>
                     <td>{trans.tNumber}</td>
                     <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>{trans.isRefund ? "refund" : "payment"}</td>

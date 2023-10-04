@@ -68,17 +68,6 @@ export default function StudentCard({ student }) {
         </div>
 
       </div>
-      <div className="px-6 pt-1 pb-2">
-        {/* <Link
-                    href={'/programs/edit/' + program._id}
-                >
-                    <span
-                        className="edit-link"
-                    >
-                        Edit
-                    </span>
-                </Link> */}
-      </div>
     </div>
   )
 }

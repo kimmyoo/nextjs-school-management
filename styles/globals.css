@@ -17,7 +17,7 @@ h2{
 }
 
 h4{
-  @apply text-xl text-slate-800 mb-4;
+  @apply text-xl text-slate-800;
 }
 
 
@@ -48,7 +48,7 @@ hr{
 }
 
 .new-link{
-  @apply bg-green-400  inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
+  @apply outline-green-600 outline inline-block rounded-md px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2;
 }
 
 .danger-link{
@@ -75,11 +75,11 @@ hr{
 
 /* containers */
 .cards-container{
-  @apply gap-2 m-3 grid grid-cols-3;
+  @apply gap-2 m-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
 }
 
 .formCols-container{
-  @apply gap-1 m-1 grid grid-cols-2;
+  @apply gap-1 m-1 grid grid-cols-1 md:grid-cols-2;
 }
 
 .col-in-form{
@@ -87,11 +87,12 @@ hr{
 }
 
 .student-small-card{
-  @apply bg-slate-300 rounded-md p-1 m-2 w-1/6 shadow-sm hover:-translate-y-1 hover:scale-110 transition ease-in-out delay-100 hover:shadow-lg hover:bg-slate-200;
+  @apply bg-slate-300 rounded-md p-1 m-1 w-full md:w-1/6 shadow-sm transition ease-in-out delay-100;
+  @apply  hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:bg-slate-200;
 }
 
 .dashboard-cards-container{
-  @apply gap-2 m-3 grid grid-cols-2;
+  @apply gap-2 m-3 grid grid-cols-1 lg:grid-cols-2;
 }
 
 .dashboard-card{
