@@ -1,10 +1,12 @@
-import { useSession, getSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import Layout from "@/components/Layout"
 import { Student } from "@/models/student";
 import { Transaction } from "@/models/transaction";
 import { Class } from "@/models/class";
 import Link from "next/link";
 import ClassCard from "@/components/ClassCard";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 import mongooseConnect from "@/lib/mongoose"
 
@@ -70,7 +72,9 @@ export default function Home({ students, classes, transactions }) {
                 <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>${trans.isRefund ? "(" + trans.amount + ")" : trans.amount}</td>
                 <td>{trans.tNumber}</td>
               </tr>
-            )) : <p>No income yet today</p>
+            )) : <tr>
+              <td>No income yet today</td>
+            </tr>
           }
         </tbody>
       </table>
@@ -85,7 +89,7 @@ export default function Home({ students, classes, transactions }) {
 
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  const session = await getServerSession(context.req, context.res, authOptions)
   if (!session) {
     return {
       redirect: {
@@ -96,7 +100,6 @@ export async function getServerSideProps(context) {
   }
 
   await mongooseConnect()
-
   const ongoingClasses = await Class.find({ status: true }, null, {
     sort: {
       "programName": 1,

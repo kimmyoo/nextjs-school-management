@@ -3,7 +3,8 @@ import Link from "next/link"
 import ProgramCard from "@/components/ProgramCard"
 import { Program } from "@/models/program"
 import mongooseConnect from "@/lib/mongoose"
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 
 export default function ProgramsPage({ programs }) {
 
@@ -33,11 +34,13 @@ export default function ProgramsPage({ programs }) {
 
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  //  document suggest: use getServerSession, faster. 
+  const session = await getServerSession(context.req, context.res, authOptions)
+
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
         permanent: false,
       }
     }

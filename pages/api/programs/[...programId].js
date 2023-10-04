@@ -1,11 +1,13 @@
 import { Program } from "@/models/program";
 import mongooseConnect from "@/lib/mongoose"
+import { isAdminRequest } from "../auth/[...nextauth]";
 
 
 
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
+    await isAdminRequest(req, res)
 
     const { programId } = req.query
 

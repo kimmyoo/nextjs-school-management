@@ -6,6 +6,8 @@ import { useState } from "react"
 import { isLicenseFormValid } from "@/lib/validation"
 import axios from "axios"
 import { useRouter } from "next/router"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
 
 export default function EditLicense({ license, programs }) {
     const [selectedProgram, setSelectedProgram] = useState(license.program)
@@ -83,6 +85,16 @@ export default function EditLicense({ license, programs }) {
 }
 
 export async function getServerSideProps(context) {
+    const session = await getServerSession(context.req, context.res, authOptions)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            }
+        }
+    }
+
     const { licenseId } = context.query
     await mongooseConnect()
 

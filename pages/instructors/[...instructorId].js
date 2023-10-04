@@ -5,6 +5,8 @@ import { License } from "@/models/license"
 import mongooseConnect from "@/lib/mongoose"
 import Link from "next/link"
 import LicenseCard from "@/components/LicenseCard"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 
 export default function InstructorDetail({ instructor, licenses }) {
 
@@ -47,6 +49,16 @@ export default function InstructorDetail({ instructor, licenses }) {
 
 
 export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
+  }
+
   const { instructorId } = context.query
   await mongooseConnect()
   const instructor = await Instructor.findOne({ _id: instructorId }, null)

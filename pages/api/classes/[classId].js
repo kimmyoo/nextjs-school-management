@@ -1,6 +1,6 @@
 import mongooseConnect from "@/lib/mongoose"
 import { Class } from "@/models/class";
-
+import { isAdminRequest } from "../auth/[...nextauth]";
 
 
 
@@ -8,6 +8,7 @@ import { Class } from "@/models/class";
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
+    await isAdminRequest(req, res)
     const { classId } = req.query
 
     if (!classId) {

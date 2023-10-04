@@ -6,6 +6,8 @@ import { useState } from "react"
 import axios from "axios"
 import { isLicenseFormValid } from "@/lib/validation"
 import { useRouter } from "next/router"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
 
 export default function NewLicense({ programs, instructor }) {
 
@@ -90,6 +92,16 @@ export default function NewLicense({ programs, instructor }) {
 
 // to get id from query, use context instead of router.
 export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
+  }
+
   const { instructorId } = context.query
   await mongooseConnect()
 

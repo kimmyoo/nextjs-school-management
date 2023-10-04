@@ -1,19 +1,25 @@
 import Header from "@/components/Header"
 import { useSession, signIn } from "next-auth/react"
 import { useRouter } from "next/router"
-
+import { useEffect } from "react"
 
 
 export default function Login() {
     const { data: session, status } = useSession()
     const router = useRouter()
-    // console.log(status)
+
+    useEffect(() => {
+        // Always do navigations after the first render
+        router.push('/', undefined, { shallow: true })
+    }, [])
+
+
     if (!status || !session) {
         return (<>
             <Header />
-            <div className="bg-slate-300 w-screen h-screen flex items-center">
+            <div className="bg-slate-300 w-screen h-screen flex">
                 <div className="text-center w-full">
-                    <h4>School Admin User Login</h4>
+                    <h4>Admin User Login</h4>
                     <button
                         className="bg-white p-2 rounded-md"
                         onClick={() => signIn('google')}
@@ -23,7 +29,11 @@ export default function Login() {
         </>)
     }
 
-    if (status && session) {
-        router.push('/')
-    }
+    //  this way will cause  Loading initial props cancelled error
+    //  use useEffect()
+    // if (status && session) {
+    //     if (router.isReady) {
+    //         router.push('/')
+    //     }
+    // }
 }

@@ -1,10 +1,11 @@
 import { Class } from "@/models/class";
 import mongooseConnect from "@/lib/mongoose"
-
+import { isAdminRequest } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
+    await isAdminRequest(req, res)
     // if (method === "GET") {
     //     const classes = await Class.find()
     //     res.status(200).json(classes)

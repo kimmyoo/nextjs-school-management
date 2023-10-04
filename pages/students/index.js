@@ -4,7 +4,8 @@ import { Student } from "@/models/student"
 import StudentCardSmall from "@/components/StudentCardSmall"
 import { useState, useEffect } from "react"
 import axios from "axios"
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 
 export default function RecentStudents({ students }) {
     const [searchQuery, setSearchQuery] = useState('')
@@ -95,11 +96,12 @@ export default function RecentStudents({ students }) {
 
 export async function getServerSideProps(context) {
     // server side rendering protection
-    const session = await getSession(context)
+    const session = await getServerSession(context.req, context.res, authOptions)
+
     if (!session) {
         return {
             redirect: {
-                destination: '/',
+                destination: '/login',
                 permanent: false,
             }
         }

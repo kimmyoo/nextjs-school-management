@@ -2,7 +2,8 @@ import Layout from "@/components/Layout"
 import { License } from "@/models/license"
 import mongooseConnect from "@/lib/mongoose"
 import ClassForm from "@/components/ClassForm"
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
 
 export default function NewClass({ license, licensesOfSameProgram }) {
     if (!license || licensesOfSameProgram?.length === 0) return
@@ -16,11 +17,11 @@ export default function NewClass({ license, licensesOfSameProgram }) {
 
 
 export async function getServerSideProps(context) {
-    const session = await getSession(context)
+    const session = await getServerSession(context.req, context.res, authOptions)
     if (!session) {
         return {
             redirect: {
-                destination: '/',
+                destination: '/login',
                 permanent: false,
             }
         }

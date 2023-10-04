@@ -1,16 +1,12 @@
 import { Student } from "@/models/student";
 import { Class } from "@/models/class";
 import mongooseConnect from "@/lib/mongoose"
-
+import { isAdminRequest } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
-
-    // if (method === "GET") {
-    //     const students = await Student.find()
-    //     res.status(200).json(students)
-    // }
+    await isAdminRequest(req, res)
 
     if (method === "POST") {
         const { formData, classId, classes } = req.body

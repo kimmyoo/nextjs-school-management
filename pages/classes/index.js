@@ -4,7 +4,8 @@ import { Program } from "@/models/program"
 import mongooseConnect from "@/lib/mongoose"
 import ProgramClasses from "@/components/ProgramClasses"
 import ClassCard from "@/components/ClassCard"
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
@@ -131,11 +132,11 @@ export default function ClassesPage({ preFetchedGroupedClasses, programs }) {
 
 
 export async function getServerSideProps(context) {
-    const session = await getSession(context)
+    const session = await getServerSession(context.req, context.res, authOptions)
     if (!session) {
         return {
             redirect: {
-                destination: '/',
+                destination: '/login',
                 permanent: false,
             }
         }

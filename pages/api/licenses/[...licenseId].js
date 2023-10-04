@@ -1,18 +1,18 @@
 import { License } from "@/models/license";
 import mongooseConnect from "@/lib/mongoose"
-
+import { isAdminRequest } from "../auth/[...nextauth]";
 
 
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
+    await isAdminRequest(req, res)
 
     const { licenseId } = req.query
 
     if (!licenseId) {
         return res.status(400).json({ message: "missing or invalid licenseId" })
     }
-
 
     // PUT request to update single license object
     if (method === "PATCH") {

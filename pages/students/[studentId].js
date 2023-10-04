@@ -2,7 +2,8 @@ import Layout from "@/components/Layout"
 import mongooseConnect from "@/lib/mongoose"
 import { Student } from "@/models/student"
 import StudentCard from "@/components/StudentCard"
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 import Link from "next/link"
 
 export default function StudentDetail({ student }) {
@@ -66,11 +67,12 @@ export default function StudentDetail({ student }) {
 
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  const session = await getServerSession(context.req, context.res, authOptions)
+
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
         permanent: false,
       }
     }

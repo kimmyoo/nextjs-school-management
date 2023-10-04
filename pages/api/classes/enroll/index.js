@@ -1,10 +1,12 @@
 import mongooseConnect from "@/lib/mongoose"
 import { Class } from "@/models/class";
 import { Student } from "@/models/student";
+import { isAdminRequest } from "../../auth/[...nextauth]";
 
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
+    await isAdminRequest(req, res)
 
     if (method === "PATCH") {
         const { cls, selectedStudent } = req.body

@@ -1,12 +1,13 @@
 import Layout from "@/components/Layout"
 import { Student } from "@/models/student"
 import mongooseConnect from "@/lib/mongoose"
-import { getSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { nanoid } from "nanoid"
 import { isTransactionFormValid } from "@/lib/validation"
 import axios from "axios"
 import { useRouter } from "next/router"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
 
 export default function NewPayment({ student }) {
   const router = useRouter()
@@ -157,11 +158,11 @@ export default function NewPayment({ student }) {
 
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  const session = await getServerSession(context.req, context.res, authOptions)
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
         permanent: false,
       }
     }

@@ -1,11 +1,14 @@
 import { Student } from "@/models/student";
 import { Class } from "@/models/class";
 import mongooseConnect from "@/lib/mongoose"
+import { isAdminRequest } from "../auth/[...nextauth]";
 
 
 export default async function handler(req, res) {
     const { method } = req
     await mongooseConnect();
+    await isAdminRequest(req, res)
+
     if (method === "PATCH") {
         const { _id, formData, classes, classesRemoved } = req.body
         const { uniqueId } = formData

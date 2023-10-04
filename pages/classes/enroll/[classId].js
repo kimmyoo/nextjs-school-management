@@ -4,9 +4,10 @@ import { Class } from "@/models/class";
 import mongooseConnect from "@/lib/mongoose";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
 import StudentForm from "@/components/StudentForm";
 import StudentCard from "@/components/StudentCard";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 
 export default function EnrollStudent({ cls }) {
@@ -154,11 +155,11 @@ export default function EnrollStudent({ cls }) {
 
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  const session = await getServerSession(context.req, context.res, authOptions)
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
         permanent: false,
       }
     }
