@@ -33,7 +33,7 @@ export default function NewPayment({ student }) {
     } else {
       setTNumber(`p-${cls ? cls.classCode : ""}-${student.uniqueId.slice(0, 4)}-${nanoid().slice(-4)}`)
     }
-  }, [isRefund, selectedClass])
+  }, [isRefund, selectedClass, student])
 
   const handleSelectChange = (e) => {
     setSelectedClass(e.target.value)
@@ -50,7 +50,7 @@ export default function NewPayment({ student }) {
       isRefund,
       tNote,
     }
-    console.log(formData)
+    // console.log(formData)
     if (!isTransactionFormValid(formData, setFormErrors)) {
       return
     }

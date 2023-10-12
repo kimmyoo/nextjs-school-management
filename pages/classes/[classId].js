@@ -29,7 +29,7 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
                     console.log(err)
                 })
         }
-    }, [query.refresh])
+    }, [query.refresh, classId])
 
     return (
         <Layout>

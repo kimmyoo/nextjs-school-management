@@ -11,7 +11,7 @@ export default function Login() {
     useEffect(() => {
         // Always do navigations after the first render
         router.push('/', undefined, { shallow: true })
-    }, [])
+    }, [router])
 
 
     if (!status || !session) {

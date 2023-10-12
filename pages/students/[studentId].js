@@ -17,7 +17,7 @@ export default function StudentDetail({ student }) {
         <StudentCard student={student} />
       </div>
       <div className="flex justify-between">
-        <h4>Student's Transaction Record</h4>
+        <h4>Student Transaction Record</h4>
         <Link
           className="new-link m-2"
           href={`/students/tuition/new/${student._id}`}

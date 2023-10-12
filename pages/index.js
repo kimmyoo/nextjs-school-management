@@ -12,8 +12,8 @@ import mongooseConnect from "@/lib/mongoose"
 
 export default function Home({ students, classes, transactions }) {
   const { data: session } = useSession()
-
-  const getSum = (total, trans) => {
+  // a reducer function passed to transactions.reduce()
+  const reducer = (total, trans) => {
     return total + (trans.isRefund ? trans.amount * -1 : trans.amount)
   }
   return <Layout >
@@ -39,7 +39,7 @@ export default function Home({ students, classes, transactions }) {
         </div>
       </div>
       <div className="dashboard-card">
-        <h4>Today's Student Registration</h4>
+        <h4>Today&apos;s Student Registration</h4>
         <div className="flex flex-wrap gap-1">
           {
             students.length > 0 ? students.map((student, index) => (
@@ -80,7 +80,7 @@ export default function Home({ students, classes, transactions }) {
       </table>
 
       <p className="text-right">Net Income: {
-        transactions.reduce(getSum, 0)
+        transactions.reduce(reducer, 0)
       }</p>
     </div>
   </Layout>

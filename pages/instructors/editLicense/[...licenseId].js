@@ -47,7 +47,7 @@ export default function EditLicense({ license, programs }) {
 
     return (
         <Layout>
-            <h4>Edit {license.instructor.instructorName}'s License</h4>
+            <h4>Edit {license.instructor.instructorName}&apos;s License</h4>
             <form className="flex flex-col">
                 <label htmlFor="programSelect">Program</label>
                 <select id="programSelect" value={selectedProgram} onChange={e => setSelectedProgram(e.target.value)}>
