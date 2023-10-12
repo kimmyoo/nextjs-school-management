@@ -7,7 +7,7 @@ import Link from "next/link";
 import ClassCard from "@/components/ClassCard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
-
+import format from "date-fns/format";
 import mongooseConnect from "@/lib/mongoose"
 
 export default function Home({ students, classes, transactions }) {
@@ -66,7 +66,7 @@ export default function Home({ students, classes, transactions }) {
           {
             transactions.length > 0 ? transactions.map(trans => (
               <tr key={trans._id}>
-                <td>{trans.createdAt.split('T')[0]}</td>
+                <td>{format(new Date(trans.createdAt), 'yyyy-MM-dd, hh:mm')}</td>
                 <td>{trans.student.lastName}, {trans.student.firstName}</td>
                 <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>{trans.isRefund ? "refund" : "payment"}</td>
                 <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>${trans.isRefund ? "(" + trans.amount + ")" : trans.amount}</td>

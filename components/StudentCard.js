@@ -1,4 +1,5 @@
 import Link from "next/link"
+import format from "date-fns/format"
 
 export default function StudentCard({ student }) {
 
@@ -25,7 +26,7 @@ export default function StudentCard({ student }) {
           <div className="col-in-form">{student.gender}</div>
 
           <div className="col-in-form">DOB</div>
-          <div className="col-in-form">{student.dob.split('T')[0]}</div>
+          <div className="col-in-form">{format(new Date(student.dob), 'yyyy-MM-dd')}</div>
 
           <div className="col-in-form">Phone Number</div>
           <div className="col-in-form">{student.phoneNum || "N/A"}</div>
@@ -43,10 +44,10 @@ export default function StudentCard({ student }) {
           <div className="col-in-form">{student.sideNote || "None"}</div>
 
           <div className="col-in-form">Registration Date</div>
-          <div className="col-in-form">{student.createdAt.split('T')[0]}</div>
+          <div className="col-in-form">{format(new Date(student.createdAt), 'yyyy-MM-dd')}</div>
 
           <div className="col-in-form">Updated At</div>
-          <div className="col-in-form">{student.updatedAt}</div>
+          <div className="col-in-form">{format(new Date(student.updatedAt), 'yyyy-MM-dd,  hh:mm aaaa')}</div>
 
           <div className="col-in-form">Classes Enrolled</div>
           <div className="col-in-form">

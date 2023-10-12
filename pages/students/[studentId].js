@@ -5,6 +5,7 @@ import StudentCard from "@/components/StudentCard"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]"
 import Link from "next/link"
+import format from "date-fns/format"
 
 export default function StudentDetail({ student }) {
   if (!student) return
@@ -46,7 +47,7 @@ export default function StudentDetail({ student }) {
               <tbody>
                 {student.transactions.map(trans => (
                   <tr key={trans._id}>
-                    <td>{trans.createdAt}</td>
+                    <td>{format(new Date(trans.createdAt), 'yyyy-MM-dd, hh:mm aaaa')}</td>
                     <td>{trans.tNumber}</td>
                     <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>{trans.isRefund ? "refund" : "payment"}</td>
                     <td>{

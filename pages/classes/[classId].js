@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]"
 import axios from "axios"
+import format from "date-fns/format"
 
 export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) {
     const [cls, setClass] = useState(preFetchedClass)
@@ -46,8 +47,8 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
             </div>
             <p className="flex justify-center gap-3">
                 <span>Instructor: {instructor.instructorName}-{cls?.license.licenseNum}</span>
-                <span>From: {cls?.begin.split('T')[0]}</span>
-                <span>To: {cls?.begin.split('T')[0]}</span>
+                <span>From: {format(new Date(cls?.begin), 'yyyy-MM-dd')}</span>
+                <span>To: {format(new Date(cls?.end), 'yyyy-MM-dd')}</span>
                 <span>Schedule: {cls?.schedule.toUpperCase()}</span>
                 <span>Status: {cls?.status ? "Open" : "Closed"}</span>
                 {cls?.sideNote && <span>Note: {cls?.sideNote}</span>}
