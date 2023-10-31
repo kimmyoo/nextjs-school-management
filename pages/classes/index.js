@@ -115,14 +115,14 @@ export default function ClassesPage({ preFetchedGroupedClasses, programs }) {
         }
 
         {
-          searchResult.length > 0 && <dir>
+          searchResult.length > 0 && <div>
             <p className="mb-2">Search Result: {searchResult.length} </p>
             <div className="flex gap-4">
               {searchResult.map(cls => (
                 <ClassCard key={cls._id} cls={cls} />
               ))}
             </div>
-          </dir>
+          </div>
         }
 
         {

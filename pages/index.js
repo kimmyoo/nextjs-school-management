@@ -50,9 +50,9 @@ export default function Home({ students, classes, transactions }) {
       </div>
     </div>
 
-    <div className="m-3 rounded-md p-4 shadow-lg">
+    <div className="m-3 rounded-md p-4 shadow-lg overflow-auto">
       <h4>Tutition Transactions</h4>
-      <table className="table-auto text-left w-full">
+      <table className="table-auto text-left w-full whitespace-nowrap">
         <thead>
           <tr>
             <th>Date</th>
@@ -79,10 +79,11 @@ export default function Home({ students, classes, transactions }) {
         </tbody>
       </table>
 
-      <p className="text-right">Net Income: {
-        transactions.reduce(reducer, 0)
-      }</p>
+
     </div>
+    <p className="text-right">Net Income: {
+      transactions.reduce(reducer, 0)
+    }</p>
   </Layout>
 }
 

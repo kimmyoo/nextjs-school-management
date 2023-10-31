@@ -6,7 +6,7 @@ export default function Layout({ children }) {
 
     return (
         <div className="bg-slate-300 min-h-screen">
-            <div className="block md:hidden flex items-center justify-center p-2">
+            <div className="md:hidden flex items-center justify-center p-2">
                 <button
                     onClick={() => setShowNav(true)}
                 >
@@ -18,7 +18,8 @@ export default function Layout({ children }) {
             </div>
             <div className="flex">
                 <Nav showNav={showNav} />
-                <div className="bg-slate-200 flex-grow p-2 mt-3 mb-2">
+                {/* must specifiy w-screen for overflow-auto to work */}
+                <div className="bg-slate-200 flex-grow p-2 mt-3 mb-2 w-screen">
                     {children}
                 </div>
             </div>

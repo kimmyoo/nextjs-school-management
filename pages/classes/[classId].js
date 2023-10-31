@@ -33,6 +33,7 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
 
     return (
         <Layout>
+
             <div className="flex justify-between">
                 <h2>Class Detail Page</h2>
                 {
@@ -45,6 +46,7 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
                     <small className="bg-blue-200 rounded-md px-2">Edit</small>
                 </Link>
             </div>
+
             <p className="flex justify-center gap-3">
                 <span>Instructor: {instructor.instructorName}-{cls?.license.licenseNum}</span>
                 <span>From: {format(new Date(cls?.begin), 'yyyy-MM-dd')}</span>
@@ -55,42 +57,42 @@ export default function ClassDetail({ preFetchedClass, preFetachedInstructor }) 
             </p>
 
             {
-                cls?.students?.length > 0 &&
-                <table className="table-auto text-left w-full">
-                    <thead>
-                        <tr>
-                            <th>last Name, First Name</th>
-                            <th>Phone</th>
-                            <th>DOB</th>
-                            <th>Last 4 digits</th>
-                            <th className="text-center">Gender</th>
-                            <th className="text-center">Address</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cls?.students.map(student => (
-                            <tr key={student._id}>
-                                <td>{student.lastName}, {student.firstName}</td>
-                                <td>{student.phoneNum}</td>
-                                <td>{student.dob.split('T')[0]}</td>
-                                <td>{student.last4Digits}</td>
-                                <td className="text-center">{student.gender}</td>
-                                <td>{student.address}</td>
-                                <td>
-                                    <Link
-                                        href={`/students/${student._id}`}
-                                        className="nooutline-link"
-                                    >
-                                        more
-                                    </Link>
-                                </td>
+                cls?.students?.length > 0 && <div className="overflow-auto">
+                    <table className="table-auto text-left w-full whitespace-nowrap">
+                        <thead>
+                            <tr>
+                                <th>last, First Name</th>
+                                <th>Phone</th>
+                                <th>DOB</th>
+                                <th>Last 4 digits</th>
+                                <th className="text-center">G</th>
+                                <th className="text-center">Address</th>
+                                <th>Details</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {cls?.students.map(student => (
+                                <tr key={student._id} className="p-3 tracking-wide">
+                                    <td className="p-2">{student.lastName}, {student.firstName}</td>
+                                    <td className="p-2">{student.phoneNum}</td>
+                                    <td className="p-2">{student.dob.split('T')[0]}</td>
+                                    <td className="p-2">{student.last4Digits}</td>
+                                    <td className="p-2 text-center">{student.gender}</td>
+                                    <td>{student.address}</td>
+                                    <td className="p-2">
+                                        <Link
+                                            href={`/students/${student._id}`}
+                                            className="nooutline-link"
+                                        >
+                                            more
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             }
-
         </Layout>
     )
 }

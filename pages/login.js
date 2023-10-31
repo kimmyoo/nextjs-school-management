@@ -1,4 +1,5 @@
 import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 import { useSession, signIn } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
@@ -15,18 +16,22 @@ export default function Login() {
 
 
     if (!status || !session) {
-        return (<>
-            <Header />
-            <div className="bg-slate-300 w-screen h-screen flex">
-                <div className="text-center w-full">
-                    <h4>Admin User Login</h4>
-                    <button
-                        className="bg-white p-2 rounded-md"
-                        onClick={() => signIn('google')}
-                    >Log In with Google Account</button>
+        return (
+            <div className="h-screen w-screen">
+                <Header />
+                <div className="bg-slate-200 h-5/6 flex">
+                    <div className="text-center w-full mt-20 flex-col">
+                        <h4>Admin User Login</h4>
+                        <h4>Authorized Personnel Only</h4>
+                        <button
+                            className="bg-white p-2 rounded-md"
+                            onClick={() => signIn('google')}
+                        >Log In with Google Account</button>
+                    </div>
                 </div>
+                <Footer />
             </div>
-        </>)
+        )
     }
 
     //  this way will cause  Loading initial props cancelled error

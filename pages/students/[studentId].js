@@ -33,32 +33,34 @@ export default function StudentDetail({ student }) {
           {
             student.transactions.length > 0
             &&
-            <table className="table-auto text-left w-full">
-              <thead>
-                <tr>
-                  <th>Date and Time</th>
-                  <th>Ref Number</th>
-                  <th>Type</th>
-                  <th>class</th>
-                  <th>Amount</th>
-                  <th>Note</th>
-                </tr>
-              </thead>
-              <tbody>
-                {student.transactions.map(trans => (
-                  <tr key={trans._id}>
-                    <td>{format(new Date(trans.createdAt), 'yyyy-MM-dd, hh:mm aaaa')}</td>
-                    <td>{trans.tNumber}</td>
-                    <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>{trans.isRefund ? "refund" : "payment"}</td>
-                    <td>{
-                      trans.tNumber.split('-')[1]
-                    }</td>
-                    <td>${trans.amount}</td>
-                    <td>{trans.tNote ? trans.tNote : "N/A"}</td>
+            <div className="overflow-auto">
+              <table className="table-auto text-left w-full whitespace-nowrap">
+                <thead>
+                  <tr>
+                    <th>Date and Time</th>
+                    <th>Ref Number</th>
+                    <th>Type</th>
+                    <th>class</th>
+                    <th>Amount</th>
+                    <th>Note</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {student.transactions.map(trans => (
+                    <tr key={trans._id}>
+                      <td className="p-2">{format(new Date(trans.createdAt), 'yyyy-MM-dd, hh:mm aaaa')}</td>
+                      <td className="p-2">{trans.tNumber}</td>
+                      <td className={trans.isRefund ? "text-red-500" : "text-green-600"}>{trans.isRefund ? "refund" : "payment"}</td>
+                      <td className="p-2">{
+                        trans.tNumber.split('-')[1]
+                      }</td>
+                      <td className="p-2">${trans.amount}</td>
+                      <td className="p-2">{trans.tNote ? trans.tNote : "N/A"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           }
         </div>
       }
